@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaveMore Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a6b3c;
+  --green-light: #e8f5ee;
+  --green-mid: #2d9e5f;
+  --orange: #e05c1a;
+  --orange-light: #fef3ed;
+  --dark: #0f1f14;
+  --text: #1a2e1d;
+  --muted: #6b7c6e;
+  --border: #d4e4da;
+  --white: #ffffff;
+  --bg: #f6faf7;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
+
+/* NAV */
+nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:100; }
+.logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--green); display:flex; align-items:center; gap:8px; }
+.logo span { color:var(--orange); }
+.nav-links { display:flex; gap:1.5rem; list-style:none; align-items:center; }
+.nav-links a { text-decoration:none; color:var(--text); font-size:0.9rem; font-weight:500; padding:6px 12px; border-radius:20px; transition:all .2s; }
+.nav-links a:hover { background:var(--green-light); color:var(--green); }
+.nav-right { display:flex; align-items:center; gap:12px; }
+.search-bar { display:flex; align-items:center; background:var(--bg); border:1.5px solid var(--border); border-radius:24px; padding:6px 14px; gap:8px; }
+.search-bar input { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:0.9rem; width:180px; color:var(--text); }
+.search-bar svg { color:var(--muted); }
+.btn-icon { background:var(--green-light); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--green); font-size:1.1rem; transition:.2s; }
+.btn-icon:hover { background:var(--green); color:var(--white); }
+.cart-badge { position:relative; }
+.cart-badge::after { content:'3'; position:absolute; top:-4px; right:-4px; background:var(--orange); color:#fff; font-size:10px; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; font-weight:600; }
+
+/* HERO */
+.hero { background:linear-gradient(135deg, var(--dark) 0%, #1a3d26 100%); color:#fff; padding:5rem 2rem 4rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; max-width:1200px; margin:0 auto; border-radius:0; }
+.hero-wrap { background:linear-gradient(135deg, var(--dark) 0%, #1a3d26 100%); }
+.hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:5px 14px; font-size:0.8rem; margin-bottom:1.2rem; color:rgba(255,255,255,0.85); }
+.hero h1 { font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:900; line-height:1.1; margin-bottom:1.2rem; }
+.hero h1 em { color:#6be8a0; font-style:normal; }
+.hero p { color:rgba(255,255,255,0.75); font-size:1rem; line-height:1.7; margin-bottom:2rem; }
+.hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-primary { background:var(--green-mid); color:#fff; border:none; padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:.2s; }
+.btn-primary:hover { background:#26b86a; transform:translateY(-1px); }
+.btn-outline { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.4); padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500; cursor:pointer; transition:.2s; }
+.btn-outline:hover { background:rgba(255,255,255,0.1); }
+.hero-stats { display:flex; gap:2rem; margin-top:2.5rem; }
+.stat-num { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:#6be8a0; }
+.stat-label { font-size:0.78rem; color:rgba(255,255,255,0.6); margin-top:2px; }
+.hero-visual { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.hero-card { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:16px; padding:1.2rem; transition:.2s; cursor:pointer; }
+.hero-card:hover { background:rgba(255,255,255,0.14); transform:translateY(-2px); }
+.hero-card-icon { font-size:2rem; margin-bottom:8px; }
+.hero-card h4 { font-size:0.85rem; font-weight:600; color:#fff; margin-bottom:4px; }
+.hero-card p { font-size:0.75rem; color:rgba(255,255,255,0.6); }
+.hero-card .price { font-size:1rem; font-weight:700; color:#6be8a0; margin-top:8px; }
+
+/* CATS */
+.section { max-width:1200px; margin:0 auto; padding:3rem 2rem; }
+.section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+.section-header h2 { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:var(--dark); }
+.see-all { color:var(--green); font-size:0.9rem; font-weight:600; text-decoration:none; background:var(--green-light); padding:8px 18px; border-radius:20px; border:none; cursor:pointer; transition:.2s; }
+.see-all:hover { background:var(--green); color:#fff; }
+.cats-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:16px; }
+.cat-card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:1.2rem 0.8rem; text-align:center; cursor:pointer; transition:.2s; }
+.cat-card:hover { border-color:var(--green-mid); transform:translateY(-2px); box-shadow:0 8px 20px rgba(26,107,60,0.12); }
+.cat-icon { font-size:2rem; margin-bottom:8px; display:block; }
+.cat-name { font-size:0.82rem; font-weight:600; color:var(--text); }
+.cat-count { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+
+/* PRODUCTS */
+.products-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.product-card { background:var(--white); border:1.5px solid var(--border); border-radius:20px; overflow:hidden; cursor:pointer; transition:.2s; }
+.product-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
+.product-img { height:180px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:3.5rem; position:relative; }
+.product-badge { position:absolute; top:10px; left:10px; background:var(--orange); color:#fff; font-size:0.7rem; font-weight:700; padding:3px 10px; border-radius:12px; }
+.product-fav { position:absolute; top:10px; right:10px; background:var(--white); border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.1); transition:.2s; }
+.product-fav:hover { background:var(--orange-light); }
+.product-body { padding:1rem; }
+.product-body h4 { font-size:0.9rem; font-weight:600; margin-bottom:4px; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.product-meta { font-size:0.75rem; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.product-seller { display:flex; align-items:center; gap:4px; }
+.seller-avatar { width:18px; height:18px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--green); }
+.product-footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+.product-price { font-size:1.1rem; font-weight:700; color:var(--green); }
+.product-old { font-size:0.75rem; color:var(--muted); text-decoration:line-through; margin-left:4px; }
+.btn-cart { background:var(--green); color:#fff; border:none; border-radius:20px; padding:7px 16px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:.2s; font-family:'DM Sans',sans-serif; }
+.btn-cart:hover { background:var(--green-mid); }
+.rating { display:flex; align-items:center; gap:3px; font-size:0.75rem; color:var(--muted); }
+.stars { color:#f59e0b; }
+
+/* REVIEWS */
+.review-card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:1rem; margin-bottom:12px; }
+.review-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+
+/* REVIEW FORM */
+.review-form { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:1.2rem; margin-top:1rem; }
+.review-form h4 { margin-bottom:12px; font-size:1rem; font-weight:600; color:var(--dark); }
+.review-form input,
+.review-form select,
+.review-form textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; color:var(--text); margin-bottom:10px; transition:.2s; }
+.review-form input:focus,
+.review-form select:focus,
+.review-form textarea:focus { border-color:var(--green-mid); }
+
+/* AI Complete button */
+.ai-complete-btn { background:linear-gradient(135deg, #1a6b3c, #2d9e5f); color:#fff; border:none; border-radius:10px; padding:8px 16px; font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; transition:.2s; margin-bottom:10px; }
+.ai-complete-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ai-complete-btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+.ai-badge { background:rgba(255,255,255,0.25); border-radius:6px; padding:2px 6px; font-size:0.7rem; }
+
+/* SELL BANNER */
+.sell-banner { background:linear-gradient(135deg, var(--orange) 0%, #c04a0e 100%); border-radius:24px; padding:3rem 2.5rem; display:flex; align-items:center; justify-content:space-between; }
+.sell-banner-text h2 { font-family:'Playfair Display',serif; font-size:2rem; color:#fff; margin-bottom:0.6rem; }
+.sell-banner-text p { color:rgba(255,255,255,0.8); font-size:0.95rem; max-width:400px; line-height:1.6; }
+.btn-white { background:#fff; color:var(--orange); border:none; padding:12px 28px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; transition:.2s; }
+.btn-white:hover { background:var(--orange-light); }
+.sell-icons { font-size:4rem; opacity:0.3; }
+
+/* FOOTER */
+footer { background:var(--dark); color:rgba(255,255,255,0.7); padding:3rem 2rem 1.5rem; margin-top:4rem; }
+.footer-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:2rem; margin-bottom:2rem; }
+.footer-col h4 { color:#fff; font-weight:600; margin-bottom:1rem; font-size:0.9rem; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.footer-col ul a { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.85rem; transition:.2s; }
+.footer-col ul a:hover { color:#6be8a0; }
+.footer-bottom { max-width:1200px; margin:0 auto; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; color:rgba(255,255,255,0.4); }
+
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:#fff; border-radius:24px; padding:2rem; width:90%; max-width:480px; position:relative; max-height:90vh; overflow-y:auto; }
+.modal h3 { font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.2rem; color:var(--dark); }
+.modal-close { position:absolute; top:1rem; right:1rem; background:var(--bg); border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; }
+.form-group { margin-bottom:1rem; }
+.form-group label { display:block; font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:5px; }
+.form-group input, .form-group select, .form-group textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; color:var(--text); transition:.2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--green-mid); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.notify { position:fixed; bottom:2rem; right:2rem; background:var(--green); color:#fff; padding:12px 20px; border-radius:12px; font-size:0.9rem; font-weight:600; z-index:2000; transform:translateY(100px); opacity:0; transition:.3s; }
+.notify.show { transform:translateY(0); opacity:1; }
+
+@media(max-width:768px){
+  .hero { grid-template-columns:1fr; padding:3rem 1.5rem; }
+  .hero-visual { display:none; }
+  .hero h1 { font-size:2.2rem; }
+  .cats-grid { grid-template-columns:repeat(3,1fr); }
+  .products-grid { grid-template-columns:repeat(2,1fr); }
+  nav .nav-links { display:none; }
+  .footer-inner { grid-template-columns:1fr 1fr; }
+  .sell-banner { flex-direction:column; gap:1.5rem; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">💚 SaveMore <span>Market</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Browse</a></li>
+    <li><a href="#">Sell</a></li>
+    <li><a href="#">Deals</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="search-bar">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products..." id="searchInput" oninput="filterProducts()">
+    </div>
+    <button class="btn-icon cart-badge" onclick="openModal('cartModal')" title="Cart">🛒</button>
+    <button class="btn-icon" onclick="openModal('loginModal')" title="Account">👤</button>
+    <button class="btn-icon" onclick="openModal('sellModal')" title="Sell">➕</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero">
+    <div>
+      <div class="hero-tag">🏪 C2C Marketplace · South Africa</div>
+      <h1>Buy &amp; Sell <em>Smarter</em> with SaveMore</h1>
+      <p>Your trusted community marketplace. Find great deals from sellers near you, or list your own items in minutes — no middleman, no hassle.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="document.querySelector('.section').scrollIntoView({behavior:'smooth'})">🛍️ Shop Now</button>
+        <button class="btn-outline" onclick="openModal('sellModal')">📦 Start Selling</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Active Listings</div></div>
+        <div class="stat"><div class="stat-num">4.8K</div><div class="stat-label">Sellers</div></div>
+        <div class="stat"><div class="stat-num">R1M+</div><div class="stat-label">In Sales</div></div>
+      </div>
+    </div>
+    <div class="hero-visual" id="heroCards"></div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-header">
+    <h2>Browse Categories</h2>
+    <button class="see-all">View All</button>
+  </div>
+  <div class="cats-grid" id="catsGrid"></div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<div class="section" style="padding-top:0">
+  <div class="section-header">
+    <h2>Featured Listings</h2>
+    <div style="display:flex;gap:10px;align-items:center">
+      <select id="filterCat" onchange="filterProducts()" style="border:1.5px solid var(--border);border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;outline:none;font-size:0.85rem;color:var(--text)">
+        <option value="">All Categories</option>
+        <option>Electronics</option>
+        <option>Clothing</option>
+        <option>Home &amp; Garden</option>
+        <option>Books</option>
+        <option>Sport</option>
+        <option>Vehicles</option>
+      </select>
+      <button class="see-all">See All</button>
+    </div>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+
+  <!-- REVIEWS SECTION -->
+  <div style="margin-top:3rem">
+    <div class="section-header">
+      <h2>Customer Reviews</h2>
+    </div>
+    <div id="reviewsContainer"></div>
+
+    <!-- REVIEW FORM with AI Complete -->
+    <div class="review-form">
+      <h4>✍️ Leave a Review</h4>
+
+      <input type="text" id="reviewName" placeholder="Your name">
+
+      <select id="reviewProduct">
+        <option value="">— Select product you bought —</option>
+        <option>Samsung Galaxy S21</option>
+        <option>Nike Air Max 270</option>
+        <option>Second-hand School Uniform</option>
+        <option>Fresh Vegetables Bundle</option>
+        <option>Basic Nokia Phone</option>
+        <option>Plastic Chairs (Set of 4)</option>
+        <option>Ladies Second-hand Dresses</option>
+        <option>Cooking Oil 5L</option>
+        <option>Used Mattress (Single)</option>
+        <option>Maize Meal 10kg</option>
+        <option>Basic Backpack</option>
+        <option>Rechargeable LED Lamp</option>
+      </select>
+
+      <select id="reviewRating">
+        <option value="5">★★★★★ — Excellent</option>
+        <option value="4">★★★★ — Good</option>
+        <option value="3">★★★ — Average</option>
+        <option value="2">★★ — Poor</option>
+        <option value="1">★ — Very Bad</option>
+      </select>
+
+      <textarea id="reviewText" rows="3" placeholder="Start typing your review, then click 'Complete with AI' to let AI finish it for you…"></textarea>
+
+      <!-- AI Complete Button -->
+      <button class="ai-complete-btn" onclick="aiCompleteReview()" id="aiBtn">
+        ✨ Complete with AI <span class="ai-badge">Smart</span>
+      </button>
+
+      <div id="aiStatus" style="font-size:0.82rem;color:var(--muted);margin-bottom:10px;display:none"></div>
+
+      <button class="btn-primary" style="width:100%" onclick="submitReview()">
+        Submit Review
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SELL BANNER -->
+<div style="max-width:1200px;margin:0 auto;padding:0 2rem 3rem">
+  <div class="sell-banner">
+    <div class="sell-banner-text">
+      <h2>Have something to sell?</h2>
+      <p>Join thousands of South Africans selling on SaveMore Market. List for free — reach buyers near you instantly.</p>
+      <button class="btn-white" style="margin-top:1.5rem" onclick="openModal('sellModal')">Start Listing Free →</button>
+    </div>
+    <div class="sell-icons">🏷️📦💰</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-col">
+      <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:#6be8a0;margin-bottom:1rem;">💚 SaveMore <span style="color:var(--orange)">Market</span></div>
+      <p style="font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.5)">South Africa's community-first C2C marketplace. Safe, simple, and affordable trading between individuals.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Marketplace</h4>
+      <ul>
+        <li><a href="#">Browse Listings</a></li>
+        <li><a href="#">Sell an Item</a></li>
+        <li><a href="#">Categories</a></li>
+        <li><a href="#">Daily Deals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Centre</a></li>
+        <li><a href="#">Buyer Protection</a></li>
+        <li><a href="#">Seller Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 SaveMore Market. All rights reserved.</span>
+    <span>Built with ❤️ in South Africa 🇿🇦</span>
+  </div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h3>Welcome Back</h3>
+    <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+    <button class="btn-primary" style="width:100%;padding:12px;border-radius:12px;font-size:1rem" onclick="showNotify('Logged in successfully! 🎉');closeModal('loginModal')">Login</button>
+    <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--muted)">No account? <a href="#" style="color:var(--green);font-weight:600">Register here</a></p>
+  </div>
+</div>
+
+<!-- SELL MODAL -->
+<div class="modal-overlay" id="sellModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('sellModal')">✕</button>
+    <h3>List an Item</h3>
+    <div class="form-group"><label>Product Title</label><input type="text" placeholder="e.g. Samsung Galaxy S21 - Excellent Condition"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Price (R)</label><input type="number" placeholder="0.00"></div>
+      <div class="form-group"><label>Category</label><select><option>Electronics</option><option>Clothing</option><option>Home &amp; Garden</option><option>Books</option><option>Sport</option><option>Vehicles</option></select></div>
+    </div>
+    <div class="form-group"><label>Description</label><textarea rows="3" placeholder="Describe your item..."></textarea></div>
+    <div class="form-group"><label>Location</label><input type="text" placeholder="e.g. Johannesburg, Gauteng"></div>
+    <button class="btn-primary" style="width:100%;padding:12px;border-radius:12px;font-size:1rem" onclick="showNotify('Listing posted! 🎉');closeModal('sellModal')">Post Listing</button>
+  </div>
+</div>
+
+<!-- CART MODAL -->
+<div class="modal-overlay" id="cartModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('cartModal')">✕</button>
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div style="border-top:1.5px solid var(--border);margin-top:1rem;padding-top:1rem">
+      <span style="font-size:1.1rem;font-weight:700;color:var(--dark)">Total: <span style="color:var(--green)" id="cartTotal">R0</span></span>
+      <div class="form-group" style="margin-top:15px">
+        <label>Full Name</label>
+        <input type="text" id="checkoutName" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="checkoutEmail" placeholder="Enter your email">
+      </div>
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <textarea id="checkoutAddress" rows="3" placeholder="Enter delivery address"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select id="paymentMethod">
+          <option>Credit/Debit Card</option>
+          <option>EFT Bank Transfer</option>
+          <option>PayFast</option>
+          <option>Cash on Delivery</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="width:100%;margin-top:10px" onclick="checkoutOrder()">Complete Purchase</button>
+    </div>
+  </div>
+</div>
+
+<div class="notify" id="notify"></div>
+
+<script>
+/* ── DATA ── */
+const products = [
+  {id:1,name:'Samsung Galaxy S21',price:4500,old:6000,category:'Electronics',seller:'TechHub_JHB',rating:4.8,reviews:24,icon:'📱',badge:'Hot'},
+  {id:2,name:'Nike Air Max 270',price:1200,old:1800,category:'Clothing',seller:'Sneakers_SA',rating:4.6,reviews:18,icon:'👟',badge:'Sale'},
+  {id:3,name:'Second-hand School Uniform',price:120,old:250,category:'Clothing',seller:'MamaThandi_JHB',rating:4.7,reviews:12,icon:'👕',badge:'Deal'},
+  {id:4,name:'Fresh Vegetables Bundle',price:45,old:null,category:'Home & Garden',seller:'Siyabonga_Farm',rating:4.9,reviews:28,icon:'🥕',badge:'Fresh'},
+  {id:5,name:'Basic Nokia Phone',price:180,old:300,category:'Electronics',seller:'TechFix_KZN',rating:4.5,reviews:15,icon:'📱',badge:'Hot'},
+  {id:6,name:'Plastic Chairs (Set of 4)',price:280,old:450,category:'Home & Garden',seller:'Furniture_Reuse',rating:4.8,reviews:9,icon:'🪑',badge:null},
+  {id:7,name:'Ladies Second-hand Dresses',price:80,old:150,category:'Clothing',seller:'ThriftQueen_CT',rating:4.6,reviews:22,icon:'👗',badge:'Sale'},
+  {id:8,name:'Cooking Oil 5L',price:95,old:null,category:'Home & Garden',seller:'BulkShop_JHB',rating:5.0,reviews:41,icon:'🛢️',badge:null},
+  {id:9,name:'Used Mattress (Single)',price:350,old:650,category:'Home & Garden',seller:'HomeEssentials',rating:4.4,reviews:7,icon:'🛏️',badge:'Good Condition'},
+  {id:10,name:'Maize Meal 10kg',price:85,old:null,category:'Home & Garden',seller:'MamaDeli',rating:4.9,reviews:35,icon:'🌽',badge:'Best Seller'},
+  {id:11,name:'Basic Backpack',price:65,old:120,category:'Clothing',seller:'SchoolGear_SA',rating:4.7,reviews:18,icon:'🎒',badge:null},
+  {id:12,name:'Rechargeable LED Lamp',price:110,old:180,category:'Electronics',seller:'PowerSolutions',rating:4.8,reviews:14,icon:'💡',badge:'New'},
+];
+
+const reviews = [
+  {name:'Neo',rating:5,review:'Excellent marketplace. Fast delivery and great prices. Will definitely shop here again!'},
+  {name:'Thando',rating:5,review:'Very easy to buy and sell items. The sellers are trustworthy and communication is great.'},
+  {name:'Lerato',rating:4,review:'Good experience overall. Found affordable products quickly and the checkout was smooth.'},
+];
+
+const categories = [
+  {icon:'📱',name:'Electronics',count:'3.2K'},
+  {icon:'👗',name:'Clothing',count:'2.8K'},
+  {icon:'🏠',name:'Home & Garden',count:'1.9K'},
+  {icon:'📚',name:'Books',count:'1.2K'},
+  {icon:'⚽',name:'Sport',count:'980'},
+  {icon:'🚗',name:'Vehicles',count:'640'},
+];
+
+const heroItems = [
+  {icon:'📱',name:'iPhone 15 Pro',price:'R12,500'},
+  {icon:'👟',name:'Adidas Ultraboost',price:'R1,400'},
+  {icon:'🚲',name:'Trek Bicycle',price:'R4,200'},
+  {icon:'📚',name:'Textbook Bundle',price:'R350'},
+];
+
+const cart = [];
+
+/* ── RENDER HERO ── */
+document.getElementById('heroCards').innerHTML = heroItems.map(h=>`
+  <div class="hero-card">
+    <div class="hero-card-icon">${h.icon}</div>
+    <h4>${h.name}</h4>
+    <p>Listed today</p>
+    <div class="price">${h.price}</div>
+  </div>`).join('');
+
+/* ── RENDER CATEGORIES ── */
+document.getElementById('catsGrid').innerHTML = categories.map(c=>`
+  <div class="cat-card" onclick="document.getElementById('filterCat').value='${c.name}';filterProducts()">
+    <span class="cat-icon">${c.icon}</span>
+    <div class="cat-name">${c.name}</div>
+    <div class="cat-count">${c.count} listings</div>
+  </div>`).join('');
+
+/* ── RENDER PRODUCTS ── */
+function renderProducts(list){
+  document.getElementById('productsGrid').innerHTML = list.length ? list.map(p=>`
+    <div class="product-card">
+      <div class="product-img">
+        ${p.icon}
+        ${p.badge?`<span class="product-badge">${p.badge}</span>`:''}
+        <button class="product-fav" onclick="addFav(event,'${p.name}')">🤍</button>
+      </div>
+      <div class="product-body">
+        <h4>${p.name}</h4>
+        <div class="product-meta">
+          <div class="product-seller">
+            <div class="seller-avatar">${p.seller[0]}</div>
+            ${p.seller}
+          </div>
+          <span>·</span>
+          <div class="rating"><span class="stars">★</span>${p.rating} (${p.reviews})</div>
+        </div>
+        <div class="product-footer">
+          <div>
+            <span class="product-price">R${p.price.toLocaleString()}</span>
+            ${p.old?`<span class="product-old">R${p.old.toLocaleString()}</span>`:''}
+          </div>
+          <button class="btn-cart" onclick="addToCart(${p.id})">Add</button>
+        </div>
+      </div>
+    </div>`).join('') : '<p style="color:var(--muted);grid-column:1/-1;text-align:center;padding:3rem">No products found.</p>';
+}
+
+function filterProducts(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cat = document.getElementById('filterCat').value;
+  const filtered = products.filter(p=>
+    (p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q))&&
+    (!cat||p.category===cat));
+  renderProducts(filtered);
+}
+
+renderProducts(products);
+
+/* ── RENDER REVIEWS ── */
+function renderReviews(){
+  document.getElementById('reviewsContainer').innerHTML = reviews.map(r=>`
+    <div class="review-card">
+      <div class="review-header">
+        <strong>${r.name}</strong>
+        <span style="color:#f59e0b">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+      </div>
+      <p style="color:var(--muted);font-size:0.9rem;line-height:1.6">${r.review}</p>
+    </div>`).join('');
+}
+renderReviews();
+
+/* ── SUBMIT REVIEW (FIXED) ── */
+function submitReview(){
+  const name = document.getElementById('reviewName').value.trim();
+  const rating = parseInt(document.getElementById('reviewRating').value);
+  const text = document.getElementById('reviewText').value.trim();
+
+  if(!name){ showNotify('Please enter your name'); return; }
+  if(!text){ showNotify('Please write a review'); return; }
+
+  reviews.unshift({ name, rating, review: text });
+  renderReviews();
+
+  // Clear form
+  document.getElementById('reviewName').value = '';
+  document.getElementById('reviewText').value = '';
+  document.getElementById('reviewProduct').value = '';
+  document.getElementById('reviewRating').value = '5';
+  document.getElementById('aiStatus').style.display = 'none';
+
+  showNotify('Review submitted! Thank you 🙏');
+}
+
+/* ── AI COMPLETE REVIEW ── */
+async function aiCompleteReview(){
+  const name = document.getElementById('reviewName').value.trim() || 'Customer';
+  const product = document.getElementById('reviewProduct').value || 'a product';
+  const rating = document.getElementById('reviewRating').value;
+  const draft = document.getElementById('reviewText').value.trim();
+  const btn = document.getElementById('aiBtn');
+  const statusEl = document.getElementById('aiStatus');
+
+  const ratingLabels = {'5':'excellent (5 stars)','4':'good (4 stars)','3':'average (3 stars)','2':'poor (2 stars)','1':'very bad (1 star)'};
+
+  btn.disabled = true;
+  btn.textContent = '⏳ Writing…';
+  statusEl.style.display = 'block';
+  statusEl.textContent = 'AI is completing your review…';
+
+  const prompt = draft
+    ? `Complete this customer review for "${product}" on a South African marketplace. The reviewer gave it a ${ratingLabels[rating]} rating. Their draft starts with: "${draft}". Write a natural, helpful, honest continuation that finishes their thought in 2–3 sentences. Return ONLY the completed full review text, no quotes, no intro.`
+    : `Write a short customer review for "${product}" on a South African marketplace. The reviewer rated it ${ratingLabels[rating]}. Write 2–3 sentences that are natural, specific, and helpful. Return ONLY the review text.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const text = data.content?.map(c => c.text||'').join('').trim();
+
+    if(text){
+      document.getElementById('reviewText').value = text;
+      statusEl.textContent = '✅ AI completed your review! Edit it if you like, then submit.';
+      statusEl.style.color = 'var(--green)';
+    } else {
+      statusEl.textContent = '⚠️ Could not generate. Please write manually.';
+    }
+  } catch(err) {
+    statusEl.textContent = '⚠️ AI unavailable. Please write your review manually.';
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '✨ Complete with AI <span class="ai-badge">Smart</span>';
+}
+
+/* ── CART ── */
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const ex = cart.find(x=>x.id===id);
+  if(ex) ex.qty++;
+  else cart.push({...p,qty:1});
+  updateCartModal();
+  showNotify(`${p.name} added to cart 🛒`);
+}
+
+function addFav(e,name){ e.target.textContent='❤️'; showNotify(`${name} saved to wishlist!`); }
+
+function updateCartModal(){
+  const el = document.getElementById('cartItems');
+  if(!cart.length){
+    el.innerHTML='<p style="color:var(--muted);text-align:center;padding:2rem">Your cart is empty</p>';
+    document.getElementById('cartTotal').textContent='R0';
+    return;
+  }
+  el.innerHTML = cart.map(c=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:2rem">${c.icon}</span>
+      <div style="flex:1"><div style="font-weight:600;font-size:0.9rem">${c.name}</div><div style="color:var(--muted);font-size:0.8rem">×${c.qty}</div></div>
+      <span style="font-weight:700;color:var(--green)">R${(c.price*c.qty).toLocaleString()}</span>
+    </div>`).join('');
+  document.getElementById('cartTotal').textContent = 'R'+(cart.reduce((s,c)=>s+c.price*c.qty,0)).toLocaleString();
+}
+
+function checkoutOrder(){
+  if(!cart.length){ showNotify('Your cart is empty'); return; }
+  const name = document.getElementById('checkoutName').value;
+  const email = document.getElementById('checkoutEmail').value;
+  const address = document.getElementById('checkoutAddress').value;
+  if(!name||!email||!address){ showNotify('Please complete all checkout fields'); return; }
+  cart.length = 0;
+  updateCartModal();
+  showNotify('Payment successful! Order placed 🎉');
+  setTimeout(()=>closeModal('cartModal'),1000);
+}
+
+/* ── MODAL HELPERS ── */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+function showNotify(msg){
+  const n = document.getElementById('notify');
+  n.textContent = msg;
+  n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
