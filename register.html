@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SaveMore Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #1a6b3c;
+            --green-light: #e8f5ee;
+            --green-mid: #2d9e5f;
+            --orange: #e05c1a;
+            --dark: #0f1f14;
+            --text: #1a2e1d;
+            --muted: #6b7c6e;
+            --border: #d4e4da;
+            --white: #ffffff;
+            --bg: #f6faf7;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+        nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; }
+        .logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--green); text-decoration:none; }
+        .logo span { color:var(--orange); }
+        .page-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:2rem 1rem; }
+        .card { background:var(--white); border-radius:24px; padding:2.5rem 2rem; width:100%; max-width:480px; box-shadow:0 10px 40px rgba(0,0,0,0.08); border:1.5px solid var(--border); }
+        .card-title { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:var(--dark); text-align:center; margin-bottom:0.4rem; }
+        .card-sub { color:var(--muted); font-size:0.9rem; text-align:center; margin-bottom:1.8rem; }
+        .form-group { margin-bottom:1rem; }
+        label { display:block; font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:5px; }
+        input[type=text], input[type=email], input[type=password], textarea, select {
+            width:100%; border:1.5px solid var(--border); border-radius:10px;
+            padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem;
+            outline:none; color:var(--text); background:var(--white); transition:.2s;
+        }
+        input:focus, textarea:focus, select:focus { border-color:var(--green-mid); }
+        .radio-group { display:flex; gap:1.5rem; margin-top:4px; }
+        .radio-group label { font-weight:400; display:flex; align-items:center; gap:6px; cursor:pointer; }
+        .radio-group input[type=radio] { width:auto; accent-color:var(--green); }
+        .strength-bar { height:4px; border-radius:4px; margin-top:6px; background:var(--border); overflow:hidden; }
+        .strength-fill { height:100%; width:0; transition:.3s; border-radius:4px; }
+        .strength-label { font-size:0.75rem; color:var(--muted); margin-top:3px; }
+        .alert { padding:12px 14px; border-radius:10px; font-size:0.88rem; margin-bottom:1rem; display:none; }
+        .alert.error { background:var(--red-light); color:var(--red); border:1px solid #fecaca; display:block; }
+        .alert.success { background:var(--green-light); color:var(--green); border:1px solid #bbf7d0; display:block; }
+        .alert ul { padding-left:1.2rem; margin-top:4px; }
+        .alert ul li { margin-top:3px; }
+        .btn { width:100%; padding:13px; background:var(--green); color:#fff; border:none; border-radius:12px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; transition:.2s; margin-top:0.5rem; }
+        .btn:hover { background:var(--green-mid); transform:translateY(-1px); }
+        .btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+        .btn-back { background:var(--bg); color:var(--text); border:1.5px solid var(--border); }
+        .btn-back:hover { background:var(--border); transform:none; }
+        .btn-row { display:flex; gap:10px; }
+        .btn-row .btn { margin-top:0.5rem; }
+        .success-state { display:none; text-align:center; padding:1rem 0; }
+        .success-icon { font-size:3.5rem; margin-bottom:1rem; }
+        .success-state h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--dark); margin-bottom:0.5rem; }
+        .success-state p { color:var(--muted); font-size:0.9rem; margin-bottom:1.5rem; }
+        .login-link { text-align:center; margin-top:1.2rem; font-size:0.88rem; color:var(--muted); }
+        .login-link a { color:var(--green); font-weight:600; text-decoration:none; }
+        .steps { display:flex; justify-content:center; margin-bottom:2rem; }
+        .step-wrap { display:flex; flex-direction:column; align-items:center; }
+        .step-dot { width:28px; height:28px; border-radius:50%; border:2px solid var(--border); background:var(--white); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--muted); transition:.3s; }
+        .step-dot.active { background:var(--green); border-color:var(--green); color:#fff; }
+        .step-dot.done { background:var(--green-light); border-color:var(--green); color:var(--green); }
+        .step-line { width:40px; height:2px; background:var(--border); transition:.3s; margin-top:14px; }
+        .step-line.done { background:var(--green); }
+        .step-label { font-size:0.7rem; color:var(--muted); margin-top:4px; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="logo" href="index.html">💚 SaveMore <span>Market</span></a>
+    <span style="font-size:0.85rem;color:var(--muted)">Already a member? <a href="index.html" style="color:var(--green);font-weight:600">Login →</a></span>
+</nav>
+
+<div class="page-wrap">
+    <div class="card">
+
+        <div class="steps" id="stepsIndicator">
+            <div class="step-wrap">
+                <div class="step-dot active" id="dot1">1</div>
+                <div class="step-label">Details</div>
+            </div>
+            <div class="step-line" id="line1"></div>
+            <div class="step-wrap">
+                <div class="step-dot" id="dot2">2</div>
+                <div class="step-label">Security</div>
+            </div>
+            <div class="step-line" id="line2"></div>
+            <div class="step-wrap">
+                <div class="step-dot" id="dot3">3</div>
+                <div class="step-label">Address</div>
+            </div>
+        </div>
+
+        <h2 class="card-title" id="cardTitle">Create Your Account</h2>
+        <p class="card-sub" id="cardSub">Join SaveMore Market — it's free!</p>
+
+        <div class="alert" id="alertBox"></div>
+
+        <form id="registerForm" novalidate>
+
+            <!-- STEP 1 -->
+            <div id="step1">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullname" placeholder="e.g. Thabo Nkosi" autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="your@email.com" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="gender" value="Male"> Male</label>
+                        <label><input type="radio" name="gender" value="Female"> Female</label>
+                        <label><input type="radio" name="gender" value="Other"> Other</label>
+                    </div>
+                </div>
+                <button type="button" class="btn" onclick="goStep2()">Continue →</button>
+            </div>
+
+            <!-- STEP 2 -->
+            <div id="step2" style="display:none">
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="At least 6 characters" oninput="checkStrength()" autocomplete="new-password">
+                    <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                    <div class="strength-label" id="strengthLabel">Enter a password</div>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm" placeholder="Repeat your password" autocomplete="new-password">
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-back" onclick="goStep(1)">← Back</button>
+                    <button type="button" class="btn" onclick="goStep3()">Continue →</button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div id="step3" style="display:none">
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <textarea id="address" rows="3" placeholder="e.g. 12 Main Street, Soweto, Johannesburg"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Province</label>
+                    <select id="province">
+                        <option value="">— Select your province —</option>
+                        <option>Gauteng</option>
+                        <option>Western Cape</option>
+                        <option>KwaZulu-Natal</option>
+                        <option>Eastern Cape</option>
+                        <option>Limpopo</option>
+                        <option>Mpumalanga</option>
+                        <option>North West</option>
+                        <option>Free State</option>
+                        <option>Northern Cape</option>
+                    </select>
+                </div>
+                <div class="btn-row">
+                    <button type="button" class="btn btn-back" onclick="goStep(2)">← Back</button>
+                    <button type="submit" class="btn" id="submitBtn">🎉 Create Account</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- SUCCESS -->
+        <div class="success-state" id="successState">
+            <div class="success-icon">🎉</div>
+            <h3>Welcome to SaveMore!</h3>
+            <p id="successMsg">Your account has been created successfully.</p>
+            <button class="btn" onclick="window.location.href='index.html'">Start Shopping →</button>
+            <div style="margin-top:1rem;font-size:0.82rem;color:var(--muted)">Your details are saved on this device.</div>
+        </div>
+
+        <div class="login-link" id="loginLink">
+            Already have an account? <a href="index.html">Login here</a>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentStep = 1;
+
+function goStep(n){
+    document.getElementById('step'+currentStep).style.display = 'none';
+    document.getElementById('step'+n).style.display = 'block';
+    for(let i=1;i<=3;i++){
+        const dot = document.getElementById('dot'+i);
+        if(i < n){ dot.className='step-dot done'; dot.textContent='✓'; }
+        else if(i===n){ dot.className='step-dot active'; dot.textContent=i; }
+        else { dot.className='step-dot'; dot.textContent=i; }
+    }
+    for(let i=1;i<=2;i++){
+        document.getElementById('line'+i).className='step-line'+(i<n?' done':'');
+    }
+    clearAlert();
+    currentStep=n;
+}
+
+function showAlert(msgs){
+    const box=document.getElementById('alertBox');
+    if(Array.isArray(msgs)&&msgs.length>1){
+        box.innerHTML='<ul>'+msgs.map(m=>`<li>${m}</li>`).join('')+'</ul>';
+    } else {
+        box.innerHTML=Array.isArray(msgs)?msgs[0]:msgs;
+    }
+    box.className='alert error';
+    box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearAlert(){
+    const box=document.getElementById('alertBox');
+    box.className='alert'; box.innerHTML='';
+}
+
+function goStep2(){
+    const name=document.getElementById('fullname').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const gender=document.querySelector('input[name=gender]:checked');
+    const errs=[];
+    if(!name) errs.push('Please enter your full name.');
+    if(!email) errs.push('Please enter your email address.');
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.push('Please enter a valid email address.');
+    if(!gender) errs.push('Please select your gender.');
+    const users=JSON.parse(localStorage.getItem('smUsers')||'[]');
+    if(users.find(u=>u.email.toLowerCase()===email.toLowerCase())) errs.push('This email is already registered. Please login instead.');
+    if(errs.length){showAlert(errs);return;}
+    goStep(2);
+}
+
+function goStep3(){
+    const pw=document.getElementById('password').value;
+    const cf=document.getElementById('confirm').value;
+    const errs=[];
+    if(!pw) errs.push('Please enter a password.');
+    else if(pw.length<6) errs.push('Password must be at least 6 characters.');
+    if(!cf) errs.push('Please confirm your password.');
+    else if(pw!==cf) errs.push('Passwords do not match.');
+    if(errs.length){showAlert(errs);return;}
+    goStep(3);
+}
+
+function checkStrength(){
+    const pw=document.getElementById('password').value;
+    const fill=document.getElementById('strengthFill');
+    const label=document.getElementById('strengthLabel');
+    let score=0;
+    if(pw.length>=6)score++;
+    if(pw.length>=10)score++;
+    if(/[A-Z]/.test(pw))score++;
+    if(/[0-9]/.test(pw))score++;
+    if(/[^A-Za-z0-9]/.test(pw))score++;
+    const levels=[
+        {pct:'0%',color:'',text:'Enter a password'},
+        {pct:'20%',color:'#dc2626',text:'Very weak'},
+        {pct:'40%',color:'#f97316',text:'Weak'},
+        {pct:'60%',color:'#eab308',text:'Fair'},
+        {pct:'80%',color:'#22c55e',text:'Good'},
+        {pct:'100%',color:'#16a34a',text:'Strong ✓'},
+    ];
+    const l=levels[score]||levels[0];
+    fill.style.width=l.pct; fill.style.background=l.color;
+    label.textContent=l.text; label.style.color=l.color||'var(--muted)';
+}
+
+document.getElementById('registerForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    const address=document.getElementById('address').value.trim();
+    const province=document.getElementById('province').value;
+    const errs=[];
+    if(!address) errs.push('Please enter your street address.');
+    if(!province) errs.push('Please select your province.');
+    if(errs.length){showAlert(errs);return;}
+
+    const btn=document.getElementById('submitBtn');
+    btn.disabled=true; btn.textContent='⏳ Creating account…';
+
+    const user={
+        fullname:document.getElementById('fullname').value.trim(),
+        email:document.getElementById('email').value.trim().toLowerCase(),
+        gender:document.querySelector('input[name=gender]:checked').value,
+        address:address+', '+province,
+        password:btoa(document.getElementById('password').value),
+        registeredAt:new Date().toISOString()
+    };
+
+    const users=JSON.parse(localStorage.getItem('smUsers')||'[]');
+    users.push(user);
+    localStorage.setItem('smUsers',JSON.stringify(users));
+    localStorage.setItem('smCurrentUser',JSON.stringify(user));
+
+    setTimeout(()=>{
+        document.getElementById('registerForm').style.display='none';
+        document.getElementById('stepsIndicator').style.display='none';
+        document.getElementById('cardTitle').style.display='none';
+        document.getElementById('cardSub').style.display='none';
+        document.getElementById('loginLink').style.display='none';
+        clearAlert();
+        document.getElementById('successMsg').textContent=
+            'Welcome, '+user.fullname.split(' ')[0]+'! Your account is ready.';
+        document.getElementById('successState').style.display='block';
+    },800);
+});
+</script>
+</body>
+</html>
