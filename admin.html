@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaveMore Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a6b3c;
+  --green-mid: #2d9e5f;
+  --green-light: #e8f5ee;
+  --green-glow: rgba(45,158,95,0.18);
+  --orange: #e05c1a;
+  --orange-light: #fef3ed;
+  --dark: #0a0f0c;
+  --dark2: #111a14;
+  --dark3: #162019;
+  --card: #111a14;
+  --card2: #172019;
+  --border: rgba(45,158,95,0.18);
+  --border2: rgba(255,255,255,0.07);
+  --text: #e8f2ea;
+  --muted: #7a9b82;
+  --white: #ffffff;
+  --red: #ef4444;
+  --red-light: rgba(239,68,68,0.12);
+  --yellow: #f59e0b;
+  --yellow-light: rgba(245,158,11,0.12);
+  --blue: #3b82f6;
+  --blue-light: rgba(59,130,246,0.12);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--dark); color:var(--text); display:flex; min-height:100vh; overflow-x:hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width:240px; min-height:100vh; background:var(--dark2);
+  border-right:1px solid var(--border); display:flex; flex-direction:column;
+  position:fixed; top:0; left:0; z-index:200;
+  transition:.3s;
+}
+.sidebar-logo {
+  padding:1.5rem 1.2rem 1rem;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:10px;
+}
+.logo-icon { width:36px; height:36px; background:var(--green); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+.logo-text { font-family:'Syne',sans-serif; font-size:1rem; font-weight:800; color:var(--text); line-height:1.1; }
+.logo-text span { color:var(--green-mid); font-size:0.7rem; font-weight:400; font-family:'DM Sans',sans-serif; display:block; color:var(--muted); }
+
+.sidebar-section { padding:1.2rem 0.8rem 0.4rem; font-size:0.65rem; font-weight:700; letter-spacing:0.12em; color:var(--muted); text-transform:uppercase; font-family:'DM Mono',monospace; }
+
+.nav-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 1.2rem; margin:1px 0.6rem;
+  border-radius:10px; cursor:pointer;
+  font-size:0.88rem; font-weight:500; color:var(--muted);
+  transition:.18s; text-decoration:none;
+  border:1px solid transparent;
+}
+.nav-item:hover { background:var(--green-glow); color:var(--text); }
+.nav-item.active { background:var(--green-glow); color:var(--green-mid); border-color:var(--border); }
+.nav-item .nav-icon { font-size:1rem; width:20px; text-align:center; flex-shrink:0; }
+.nav-badge { margin-left:auto; background:var(--orange); color:#fff; font-size:0.65rem; font-weight:700; padding:2px 7px; border-radius:10px; font-family:'DM Mono',monospace; }
+
+.sidebar-footer { margin-top:auto; padding:1rem; border-top:1px solid var(--border); }
+.admin-profile { display:flex; align-items:center; gap:10px; }
+.admin-avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--green),var(--green-mid)); display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:700; color:#fff; flex-shrink:0; }
+.admin-info { flex:1; overflow:hidden; }
+.admin-name { font-size:0.82rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.admin-role { font-size:0.7rem; color:var(--muted); }
+
+/* ── MAIN ── */
+.main { margin-left:240px; flex:1; display:flex; flex-direction:column; min-height:100vh; }
+
+/* TOPBAR */
+.topbar {
+  height:60px; background:var(--dark2); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1.8rem; position:sticky; top:0; z-index:100;
+}
+.topbar-left { display:flex; align-items:center; gap:14px; }
+.page-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text); }
+.breadcrumb { font-size:0.78rem; color:var(--muted); font-family:'DM Mono',monospace; }
+.topbar-right { display:flex; align-items:center; gap:10px; }
+.topbar-btn { background:transparent; border:1px solid var(--border); border-radius:8px; padding:6px 12px; font-size:0.82rem; color:var(--muted); cursor:pointer; font-family:'DM Sans',sans-serif; display:flex; align-items:center; gap:6px; transition:.2s; }
+.topbar-btn:hover { border-color:var(--green-mid); color:var(--text); }
+.status-dot { width:7px; height:7px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px #22c55e; }
+
+/* CONTENT */
+.content { padding:1.8rem; flex:1; }
+.page-section { display:none; }
+.page-section.active { display:block; }
+
+/* STAT CARDS */
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:1.8rem; }
+.stat-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:1.2rem 1.4rem; position:relative; overflow:hidden; cursor:pointer;
+  transition:.2s;
+}
+.stat-card:hover { border-color:var(--green-mid); transform:translateY(-2px); }
+.stat-card::before { content:''; position:absolute; top:0; right:0; width:80px; height:80px; border-radius:50%; opacity:0.07; }
+.stat-card.green::before { background:var(--green-mid); }
+.stat-card.orange::before { background:var(--orange); }
+.stat-card.blue::before { background:var(--blue); }
+.stat-card.yellow::before { background:var(--yellow); }
+.stat-icon { font-size:1.5rem; margin-bottom:10px; }
+.stat-label { font-size:0.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px; }
+.stat-value { font-family:'Syne',sans-serif; font-size:1.9rem; font-weight:800; color:var(--text); line-height:1; }
+.stat-change { font-size:0.75rem; margin-top:6px; display:flex; align-items:center; gap:4px; }
+.stat-change.up { color:#22c55e; }
+.stat-change.down { color:var(--red); }
+
+/* GRID LAYOUT */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:1.8rem; }
+.grid-3 { display:grid; grid-template-columns:2fr 1fr; gap:14px; margin-bottom:1.8rem; }
+
+/* PANELS */
+.panel { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.panel-header { padding:1rem 1.4rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.panel-title { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; color:var(--text); }
+.panel-body { padding:1.2rem 1.4rem; }
+.panel-action { font-size:0.78rem; color:var(--green-mid); cursor:pointer; background:var(--green-glow); padding:4px 12px; border-radius:8px; border:none; font-family:'DM Sans',sans-serif; transition:.2s; }
+.panel-action:hover { background:var(--green); color:#fff; }
+
+/* TABLE */
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th { font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.07em; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border); font-family:'DM Mono',monospace; }
+.data-table td { padding:10px; font-size:0.84rem; border-bottom:1px solid var(--border2); vertical-align:middle; }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:rgba(45,158,95,0.05); }
+.td-name { display:flex; align-items:center; gap:8px; }
+.td-avatar { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:#fff; flex-shrink:0; }
+
+/* BADGES */
+.badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:0.72rem; font-weight:600; font-family:'DM Mono',monospace; }
+.badge-green { background:rgba(34,197,94,0.12); color:#22c55e; }
+.badge-orange { background:var(--orange-light); color:var(--orange); }
+.badge-red { background:var(--red-light); color:var(--red); }
+.badge-blue { background:var(--blue-light); color:var(--blue); }
+.badge-yellow { background:var(--yellow-light); color:var(--yellow); }
+.badge-muted { background:var(--border2); color:var(--muted); }
+
+/* MINI CHART */
+.sparkline-wrap { display:flex; align-items:flex-end; gap:3px; height:40px; }
+.spark-bar { flex:1; background:var(--green-glow); border-radius:3px 3px 0 0; transition:.3s; min-width:8px; }
+.spark-bar.highlight { background:var(--green-mid); }
+
+/* PROGRESS BARS */
+.progress-item { margin-bottom:14px; }
+.progress-label { display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px; }
+.progress-label span:first-child { color:var(--text); }
+.progress-label span:last-child { color:var(--muted); font-family:'DM Mono',monospace; font-size:0.75rem; }
+.progress-bar { height:6px; background:var(--border); border-radius:10px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:10px; transition:width 1s ease; }
+
+/* ACTIVITY FEED */
+.activity-item { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border2); }
+.activity-item:last-child { border-bottom:none; }
+.activity-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.activity-text { font-size:0.82rem; color:var(--text); line-height:1.5; }
+.activity-time { font-size:0.72rem; color:var(--muted); font-family:'DM Mono',monospace; margin-top:2px; }
+
+/* ACTION BUTTONS */
+.btn-sm { padding:5px 12px; border-radius:8px; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; border:none; transition:.2s; }
+.btn-green { background:var(--green-glow); color:var(--green-mid); border:1px solid var(--border); }
+.btn-green:hover { background:var(--green); color:#fff; border-color:var(--green); }
+.btn-red { background:var(--red-light); color:var(--red); border:1px solid rgba(239,68,68,0.2); }
+.btn-red:hover { background:var(--red); color:#fff; }
+.btn-yellow { background:var(--yellow-light); color:var(--yellow); border:1px solid rgba(245,158,11,0.2); }
+
+/* SEARCH & FILTER ROW */
+.filter-row { display:flex; gap:10px; align-items:center; margin-bottom:1.2rem; flex-wrap:wrap; }
+.search-input { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:8px 14px; font-family:'DM Sans',sans-serif; font-size:0.85rem; color:var(--text); outline:none; min-width:200px; }
+.search-input::placeholder { color:var(--muted); }
+.search-input:focus { border-color:var(--green-mid); }
+.filter-select { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:8px 14px; font-family:'DM Sans',sans-serif; font-size:0.85rem; color:var(--text); outline:none; cursor:pointer; }
+.filter-select option { background:var(--dark2); }
+
+/* MODAL */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:500; align-items:center; justify-content:center; backdrop-filter:blur(4px); }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--dark2); border:1px solid var(--border); border-radius:20px; padding:1.8rem; width:90%; max-width:460px; position:relative; }
+.modal h3 { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:1.2rem; color:var(--text); }
+.modal-close { position:absolute; top:1rem; right:1rem; background:var(--border2); border:none; border-radius:8px; width:30px; height:30px; cursor:pointer; color:var(--muted); font-size:1rem; display:flex; align-items:center; justify-content:center; }
+.form-group { margin-bottom:1rem; }
+.form-group label { display:block; font-size:0.78rem; font-weight:600; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.05em; }
+.form-group input, .form-group select, .form-group textarea { width:100%; background:var(--dark3); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-family:'DM Sans',sans-serif; font-size:0.88rem; color:var(--text); outline:none; transition:.2s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--green-mid); }
+.form-group select option { background:var(--dark2); }
+.btn-primary { background:var(--green); color:#fff; border:none; padding:11px 24px; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; transition:.2s; }
+.btn-primary:hover { background:var(--green-mid); }
+
+/* NOTIFY */
+.notify { position:fixed; bottom:1.5rem; right:1.5rem; background:var(--green); color:#fff; padding:10px 18px; border-radius:10px; font-size:0.85rem; font-weight:600; z-index:9999; transform:translateY(80px); opacity:0; transition:.3s; border:1px solid var(--green-mid); }
+.notify.show { transform:translateY(0); opacity:1; }
+
+/* CHARTS (CSS only) */
+.donut-wrap { display:flex; align-items:center; justify-content:center; gap:1.5rem; }
+.donut { width:120px; height:120px; border-radius:50%; flex-shrink:0; }
+.donut-legend { display:flex; flex-direction:column; gap:8px; }
+.legend-item { display:flex; align-items:center; gap:8px; font-size:0.8rem; }
+.legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* METRIC ROW */
+.metric-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.2rem; }
+.metric-chip { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:8px 14px; font-size:0.78rem; }
+.metric-chip strong { font-family:'Syne',sans-serif; font-size:1rem; display:block; color:var(--text); }
+.metric-chip span { color:var(--muted); }
+
+/* TOGGLE */
+.toggle-wrap { display:flex; align-items:center; gap:8px; }
+.toggle { width:36px; height:20px; background:var(--border); border-radius:10px; cursor:pointer; position:relative; transition:.2s; border:none; }
+.toggle.on { background:var(--green); }
+.toggle::after { content:''; position:absolute; top:3px; left:3px; width:14px; height:14px; border-radius:50%; background:#fff; transition:.2s; }
+.toggle.on::after { left:19px; }
+
+/* MOBILE */
+.hamburger { display:none; background:none; border:none; color:var(--text); font-size:1.3rem; cursor:pointer; }
+
+@media(max-width:900px){
+  .sidebar { left:-240px; }
+  .sidebar.open { left:0; box-shadow:4px 0 30px rgba(0,0,0,0.5); }
+  .main { margin-left:0; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .grid-2, .grid-3 { grid-template-columns:1fr; }
+  .hamburger { display:block; }
+}
+@media(max-width:600px){
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .content { padding:1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">💚</div>
+    <div class="logo-text">SaveMore Admin<span>Management Console</span></div>
+  </div>
+
+  <div class="sidebar-section">Overview</div>
+  <a class="nav-item active" onclick="showPage('dashboard',this)">
+    <span class="nav-icon">📊</span> Dashboard
+  </a>
+  <a class="nav-item" onclick="showPage('analytics',this)">
+    <span class="nav-icon">📈</span> Analytics
+  </a>
+
+  <div class="sidebar-section">Marketplace</div>
+  <a class="nav-item" onclick="showPage('listings',this)">
+    <span class="nav-icon">🏷️</span> Listings
+    <span class="nav-badge">12</span>
+  </a>
+  <a class="nav-item" onclick="showPage('orders',this)">
+    <span class="nav-icon">📦</span> Orders
+    <span class="nav-badge">5</span>
+  </a>
+  <a class="nav-item" onclick="showPage('reviews',this)">
+    <span class="nav-icon">⭐</span> Reviews
+  </a>
+
+  <div class="sidebar-section">People</div>
+  <a class="nav-item" onclick="showPage('users',this)">
+    <span class="nav-icon">👥</span> Users
+  </a>
+  <a class="nav-item" onclick="showPage('sellers',this)">
+    <span class="nav-icon">🛒</span> Sellers
+  </a>
+
+  <div class="sidebar-section">System</div>
+  <a class="nav-item" onclick="showPage('reports',this)">
+    <span class="nav-icon">🚨</span> Reports
+    <span class="nav-badge" style="background:var(--red)">3</span>
+  </a>
+  <a class="nav-item" onclick="showPage('settings',this)">
+    <span class="nav-icon">⚙️</span> Settings
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="admin-profile">
+      <div class="admin-avatar">A</div>
+      <div class="admin-info">
+        <div class="admin-name">Admin User</div>
+        <div class="admin-role">Super Administrator</div>
+      </div>
+      <span style="cursor:pointer;color:var(--muted);font-size:0.9rem" onclick="logout()">⎋</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="page-title" id="pageTitle">Dashboard</div>
+        <div class="breadcrumb" id="pageBreadcrumb">SaveMore / Admin / Dashboard</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--muted)">
+        <div class="status-dot"></div> Live
+      </div>
+      <button class="topbar-btn" onclick="showNotify('Data refreshed ✓')">🔄 Refresh</button>
+      <button class="topbar-btn" onclick="showPage('settings',null)">⚙️</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════ DASHBOARD ══════════════════ -->
+    <div class="page-section active" id="page-dashboard">
+
+      <div class="stats-grid">
+        <div class="stat-card green">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value">R84,230</div>
+          <div class="stat-change up">▲ 12.4% this month</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">📦</div>
+          <div class="stat-label">Total Orders</div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-change up">▲ 8.1% this month</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Registered Users</div>
+          <div class="stat-value">4,819</div>
+          <div class="stat-change up">▲ 3.2% this week</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-icon">🏷️</div>
+          <div class="stat-label">Active Listings</div>
+          <div class="stat-value">12,046</div>
+          <div class="stat-change down">▼ 0.8% today</div>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <!-- REVENUE CHART -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Revenue — Last 7 Days</span>
+            <button class="panel-action">Export</button>
+          </div>
+          <div class="panel-body">
+            <div class="metric-row">
+              <div class="metric-chip"><strong>R12,840</strong><span>Today</span></div>
+              <div class="metric-chip"><strong>R84,230</strong><span>This Month</span></div>
+              <div class="metric-chip"><strong>R2.1M</strong><span>All Time</span></div>
+            </div>
+            <div class="sparkline-wrap" id="revenueChart"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace">
+              <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATEGORY BREAKDOWN -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Top Categories</span>
+          </div>
+          <div class="panel-body">
+            <div class="progress-item">
+              <div class="progress-label"><span>📱 Electronics</span><span>3,240</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:82%;background:var(--green-mid)"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>👗 Clothing</span><span>2,810</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:68%;background:var(--blue)"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>🏠 Home &amp; Garden</span><span>1,920</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:48%;background:var(--orange)"></div></div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label"><span>📚 Books</span><span>1,200</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:30%;background:var(--yellow)"></div></div>
+            </div>
+            <div class="progress-item" style="margin-bottom:0">
+              <div class="progress-label"><span>⚽ Sport</span><span>980</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:24%;background:var(--red)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- RECENT ORDERS -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Recent Orders</span>
+            <button class="panel-action" onclick="showPage('orders',null)">View All</button>
+          </div>
+          <div class="panel-body" style="padding:0">
+            <table class="data-table">
+              <thead><tr><th>Order</th><th>Buyer</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)">#ORD-1091</span></td><td>Neo M.</td><td style="color:var(--green-mid);font-weight:600">R4,500</td><td><span class="badge badge-green">Completed</span></td></tr>
+                <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)">#ORD-1090</span></td><td>Thando K.</td><td style="color:var(--green-mid);font-weight:600">R1,200</td><td><span class="badge badge-yellow">Pending</span></td></tr>
+                <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)">#ORD-1089</span></td><td>Lerato S.</td><td style="color:var(--green-mid);font-weight:600">R280</td><td><span class="badge badge-blue">Shipped</span></td></tr>
+                <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)">#ORD-1088</span></td><td>Sipho D.</td><td style="color:var(--green-mid);font-weight:600">R95</td><td><span class="badge badge-green">Completed</span></td></tr>
+                <tr><td><span style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)">#ORD-1087</span></td><td>Nomsa P.</td><td style="color:var(--green-mid);font-weight:600">R350</td><td><span class="badge badge-red">Cancelled</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ACTIVITY FEED -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Live Activity</span>
+            <span style="font-size:0.72rem;color:var(--green-mid);font-family:'DM Mono',monospace">● LIVE</span>
+          </div>
+          <div class="panel-body">
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#22c55e"></div>
+              <div><div class="activity-text">New user <strong>Zanele M.</strong> registered</div><div class="activity-time">2 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--orange)"></div>
+              <div><div class="activity-text"><strong>TechHub_JHB</strong> posted new listing: Samsung Galaxy S21</div><div class="activity-time">5 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--blue)"></div>
+              <div><div class="activity-text">Order <strong>#ORD-1091</strong> marked complete — R4,500</div><div class="activity-time">12 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--red)"></div>
+              <div><div class="activity-text">Listing reported by user: <em>"Suspected scam"</em></div><div class="activity-time">18 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:var(--yellow)"></div>
+              <div><div class="activity-text"><strong>Lerato S.</strong> left a 5-star review</div><div class="activity-time">25 min ago</div></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#22c55e"></div>
+              <div><div class="activity-text">New seller verified: <strong>MamaDeli</strong></div><div class="activity-time">34 min ago</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ LISTINGS ══════════════════ -->
+    <div class="page-section" id="page-listings">
+      <div class="filter-row">
+        <input class="search-input" placeholder="🔍  Search listings..." oninput="filterTable('listingsTable',this.value)">
+        <select class="filter-select" onchange="filterTable('listingsTable',this.value)">
+          <option value="">All Categories</option>
+          <option>Electronics</option>
+          <option>Clothing</option>
+          <option>Home &amp; Garden</option>
+          <option>Books</option>
+          <option>Sport</option>
+        </select>
+        <select class="filter-select">
+          <option>All Status</option>
+          <option>Active</option>
+          <option>Pending</option>
+          <option>Removed</option>
+        </select>
+        <button class="btn-sm btn-green" onclick="openModal('addListingModal')" style="margin-left:auto">➕ Add Listing</button>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">All Listings <span style="color:var(--muted);font-size:0.8rem;font-weight:400">(12 total)</span></span>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table" id="listingsTable">
+          <thead><tr><th>Product</th><th>Seller</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">📱</span> Samsung Galaxy S21</div></td><td>TechHub_JHB</td><td>Electronics</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R4,500</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">👟</span> Nike Air Max 270</div></td><td>Sneakers_SA</td><td>Clothing</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R1,200</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">👕</span> Second-hand Uniform</div></td><td>MamaThandi_JHB</td><td>Clothing</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R120</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Approve</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">🥕</span> Fresh Vegetables Bundle</div></td><td>Siyabonga_Farm</td><td>Home &amp; Garden</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R45</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">📱</span> Basic Nokia Phone</div></td><td>TechFix_KZN</td><td>Electronics</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R180</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">🪑</span> Plastic Chairs (Set of 4)</div></td><td>Furniture_Reuse</td><td>Home &amp; Garden</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R280</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Approve</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">👗</span> Ladies Dresses</div></td><td>ThriftQueen_CT</td><td>Clothing</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R80</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">🛢️</span> Cooking Oil 5L</div></td><td>BulkShop_JHB</td><td>Home &amp; Garden</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R95</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Listing paused')">Pause</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><span style="font-size:1.2rem">💡</span> Rechargeable LED Lamp</div></td><td>PowerSolutions</td><td>Electronics</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R110</td><td><span class="badge badge-red">Removed</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Restore</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ ORDERS ══════════════════ -->
+    <div class="page-section" id="page-orders">
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr)">
+        <div class="stat-card green"><div class="stat-icon">✅</div><div class="stat-label">Completed</div><div class="stat-value">1,142</div></div>
+        <div class="stat-card yellow"><div class="stat-icon">⏳</div><div class="stat-label">Pending</div><div class="stat-value">87</div></div>
+        <div class="stat-card blue"><div class="stat-icon">🚚</div><div class="stat-label">Shipped</div><div class="stat-value">55</div></div>
+        <div class="stat-card" style="border-color:var(--red-light)"><div class="stat-icon">❌</div><div class="stat-label">Cancelled</div><div class="stat-value">42</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">All Orders</span>
+          <button class="panel-action" onclick="showNotify('Orders exported as CSV')">Export CSV</button>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Order ID</th><th>Buyer</th><th>Product</th><th>Amount</th><th>Payment</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted)">#ORD-1091</td><td>Neo Molefe</td><td>Samsung Galaxy S21</td><td style="color:var(--green-mid);font-weight:600;font-family:'DM Mono',monospace">R4,500</td><td>PayFast</td><td style="color:var(--muted);font-size:0.78rem">2025-06-01</td><td><span class="badge badge-green">Completed</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Order details viewed')">View</button></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted)">#ORD-1090</td><td>Thando Khumalo</td><td>Nike Air Max 270</td><td style="color:var(--green-mid);font-weight:600;font-family:'DM Mono',monospace">R1,200</td><td>EFT</td><td style="color:var(--muted);font-size:0.78rem">2025-06-01</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Order approved')">Approve</button></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted)">#ORD-1089</td><td>Lerato Sithole</td><td>Plastic Chairs x4</td><td style="color:var(--green-mid);font-weight:600;font-family:'DM Mono',monospace">R280</td><td>Card</td><td style="color:var(--muted);font-size:0.78rem">2025-05-31</td><td><span class="badge badge-blue">Shipped</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Tracking updated')">Track</button></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted)">#ORD-1088</td><td>Sipho Dlamini</td><td>Cooking Oil 5L</td><td style="color:var(--green-mid);font-weight:600;font-family:'DM Mono',monospace">R95</td><td>Cash</td><td style="color:var(--muted);font-size:0.78rem">2025-05-31</td><td><span class="badge badge-green">Completed</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Order details viewed')">View</button></td></tr>
+            <tr><td style="font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--muted)">#ORD-1087</td><td>Nomsa Petersen</td><td>Used Mattress</td><td style="color:var(--green-mid);font-weight:600;font-family:'DM Mono',monospace">R350</td><td>Card</td><td style="color:var(--muted);font-size:0.78rem">2025-05-30</td><td><span class="badge badge-red">Cancelled</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('Refund initiated')">Refund</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ USERS ══════════════════ -->
+    <div class="page-section" id="page-users">
+      <div class="filter-row">
+        <input class="search-input" placeholder="🔍  Search users..." oninput="filterTable('usersTable',this.value)">
+        <select class="filter-select">
+          <option>All Users</option>
+          <option>Active</option>
+          <option>Suspended</option>
+          <option>New</option>
+        </select>
+        <button class="btn-sm btn-green" onclick="openModal('addUserModal')" style="margin-left:auto">➕ Add User</button>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Registered Users <span style="color:var(--muted);font-size:0.8rem;font-weight:400">(4,819 total)</span></span>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table" id="usersTable">
+          <thead><tr><th>User</th><th>Email</th><th>Province</th><th>Joined</th><th>Orders</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--green)">N</div> Neo Molefe</div></td><td style="color:var(--muted);font-size:0.8rem">neo@email.co.za</td><td>Gauteng</td><td style="color:var(--muted);font-size:0.78rem">2025-01-12</td><td style="font-family:'DM Mono',monospace">14</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended')">Suspend</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--blue)">T</div> Thando Khumalo</div></td><td style="color:var(--muted);font-size:0.8rem">thando@email.co.za</td><td>KZN</td><td style="color:var(--muted);font-size:0.78rem">2025-02-08</td><td style="font-family:'DM Mono',monospace">7</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended')">Suspend</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--orange)">L</div> Lerato Sithole</div></td><td style="color:var(--muted);font-size:0.8rem">lerato@email.co.za</td><td>Gauteng</td><td style="color:var(--muted);font-size:0.78rem">2025-03-15</td><td style="font-family:'DM Mono',monospace">3</td><td><span class="badge badge-yellow">New</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended')">Suspend</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:#8b5cf6">S</div> Sipho Dlamini</div></td><td style="color:var(--muted);font-size:0.8rem">sipho@email.co.za</td><td>Western Cape</td><td style="color:var(--muted);font-size:0.78rem">2024-11-22</td><td style="font-family:'DM Mono',monospace">28</td><td><span class="badge badge-green">Active</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended')">Suspend</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--red)">Z</div> Zanele Mokoena</div></td><td style="color:var(--muted);font-size:0.8rem">zanele@email.co.za</td><td>Limpopo</td><td style="color:var(--muted);font-size:0.78rem">2025-05-30</td><td style="font-family:'DM Mono',monospace">0</td><td><span class="badge badge-red">Suspended</span></td><td><button class="btn-sm btn-green" onclick="showNotify('User reactivated')">Reactivate</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SELLERS ══════════════════ -->
+    <div class="page-section" id="page-sellers">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Sellers</span>
+          <button class="panel-action" onclick="showNotify('Seller report exported')">Export</button>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Seller</th><th>Listings</th><th>Sales</th><th>Rating</th><th>Province</th><th>Verified</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--green)">T</div> TechHub_JHB</div></td><td style="font-family:'DM Mono',monospace">24</td><td style="color:var(--green-mid);font-family:'DM Mono',monospace">R42,000</td><td>⭐ 4.8</td><td>Gauteng</td><td><span class="badge badge-green">✓ Verified</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Seller profile opened')">View</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--orange)">S</div> Sneakers_SA</div></td><td style="font-family:'DM Mono',monospace">18</td><td style="color:var(--green-mid);font-family:'DM Mono',monospace">R21,600</td><td>⭐ 4.6</td><td>Gauteng</td><td><span class="badge badge-green">✓ Verified</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Seller profile opened')">View</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--blue)">M</div> MamaDeli</div></td><td style="font-family:'DM Mono',monospace">41</td><td style="color:var(--green-mid);font-family:'DM Mono',monospace">R3,485</td><td>⭐ 4.9</td><td>KZN</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Seller verified ✓')">Verify</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:#8b5cf6">T</div> ThriftQueen_CT</div></td><td style="font-family:'DM Mono',monospace">22</td><td style="color:var(--green-mid);font-family:'DM Mono',monospace">R1,760</td><td>⭐ 4.6</td><td>Western Cape</td><td><span class="badge badge-green">✓ Verified</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Seller profile opened')">View</button></td></tr>
+            <tr><td><div class="td-name"><div class="td-avatar" style="background:var(--yellow)">S</div> Siyabonga_Farm</div></td><td style="font-family:'DM Mono',monospace">28</td><td style="color:var(--green-mid);font-family:'DM Mono',monospace">R1,260</td><td>⭐ 4.9</td><td>Limpopo</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="showNotify('Seller verified ✓')">Verify</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ REVIEWS ══════════════════ -->
+    <div class="page-section" id="page-reviews">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Customer Reviews</span>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Reviewer</th><th>Product</th><th>Rating</th><th>Review</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Neo</td><td>Samsung Galaxy S21</td><td style="color:#f59e0b">★★★★★</td><td style="font-size:0.8rem;color:var(--muted);max-width:200px">Excellent marketplace. Fast delivery.</td><td style="color:var(--muted);font-size:0.78rem">2025-06-01</td><td><span class="badge badge-green">Approved</span></td><td><button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td>Thando</td><td>Nike Air Max 270</td><td style="color:#f59e0b">★★★★★</td><td style="font-size:0.8rem;color:var(--muted);max-width:200px">Very easy to buy and sell items.</td><td style="color:var(--muted);font-size:0.78rem">2025-05-30</td><td><span class="badge badge-green">Approved</span></td><td><button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td>Lerato</td><td>Cooking Oil 5L</td><td style="color:#f59e0b">★★★★</td><td style="font-size:0.8rem;color:var(--muted);max-width:200px">Good experience. Found products quickly.</td><td style="color:var(--muted);font-size:0.78rem">2025-05-29</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Approve</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+            <tr><td>Anonymous</td><td>Used Mattress</td><td style="color:#f59e0b">★★</td><td style="font-size:0.8rem;color:var(--muted);max-width:200px">Product was not as described.</td><td style="color:var(--muted);font-size:0.78rem">2025-05-28</td><td><span class="badge badge-red">Flagged</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Approve</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ REPORTS ══════════════════ -->
+    <div class="page-section" id="page-reports">
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">🚨 Flagged Reports <span style="background:var(--red-light);color:var(--red);padding:2px 8px;border-radius:6px;font-size:0.75rem;font-weight:600;margin-left:8px">3 Open</span></span>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Type</th><th>Reported By</th><th>Subject</th><th>Reason</th><th>Date</th><th>Priority</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>🏷️ Listing</td><td>Sipho D.</td><td>Rechargeable LED Lamp</td><td style="font-size:0.8rem;color:var(--muted)">Suspected scam / fake product</td><td style="color:var(--muted);font-size:0.78rem">2025-06-01</td><td><span class="badge badge-red">High</span></td><td><button class="btn-sm btn-red" onclick="removeRow(this)">Remove Listing</button></td></tr>
+            <tr><td>👤 User</td><td>Lerato S.</td><td>BulkShop_JHB</td><td style="font-size:0.8rem;color:var(--muted)">Harassing messages after purchase</td><td style="color:var(--muted);font-size:0.78rem">2025-05-31</td><td><span class="badge badge-yellow">Medium</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended pending review')">Suspend</button></td></tr>
+            <tr><td>💬 Review</td><td>TechHub_JHB</td><td>1-star review by "anon"</td><td style="font-size:0.8rem;color:var(--muted)">Fake / competitor review</td><td style="color:var(--muted);font-size:0.78rem">2025-05-30</td><td><span class="badge badge-muted">Low</span></td><td><button class="btn-sm btn-red" onclick="removeRow(this)">Remove Review</button></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ ANALYTICS ══════════════════ -->
+    <div class="page-section" id="page-analytics">
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon">📊</div><div class="stat-label">Conversion Rate</div><div class="stat-value">3.8%</div><div class="stat-change up">▲ 0.4%</div></div>
+        <div class="stat-card blue"><div class="stat-icon">⏱️</div><div class="stat-label">Avg Session</div><div class="stat-value">4m 12s</div><div class="stat-change up">▲ 12s</div></div>
+        <div class="stat-card orange"><div class="stat-icon">📍</div><div class="stat-label">Page Views</div><div class="stat-value">48,290</div><div class="stat-change up">▲ 6.1%</div></div>
+        <div class="stat-card yellow"><div class="stat-icon">🔁</div><div class="stat-label">Return Rate</div><div class="stat-value">62%</div><div class="stat-change up">▲ 2.3%</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Traffic by Province</span></div>
+          <div class="panel-body">
+            <div class="progress-item"><div class="progress-label"><span>Gauteng</span><span>42%</span></div><div class="progress-bar"><div class="progress-fill" style="width:42%;background:var(--green-mid)"></div></div></div>
+            <div class="progress-item"><div class="progress-label"><span>Western Cape</span><span>24%</span></div><div class="progress-bar"><div class="progress-fill" style="width:24%;background:var(--blue)"></div></div></div>
+            <div class="progress-item"><div class="progress-label"><span>KwaZulu-Natal</span><span>18%</span></div><div class="progress-bar"><div class="progress-fill" style="width:18%;background:var(--orange)"></div></div></div>
+            <div class="progress-item"><div class="progress-label"><span>Eastern Cape</span><span>9%</span></div><div class="progress-bar"><div class="progress-fill" style="width:9%;background:var(--yellow)"></div></div></div>
+            <div class="progress-item" style="margin:0"><div class="progress-label"><span>Other</span><span>7%</span></div><div class="progress-bar"><div class="progress-fill" style="width:7%;background:var(--muted)"></div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Device Breakdown</span></div>
+          <div class="panel-body">
+            <div class="donut-wrap" style="margin-bottom:1rem">
+              <div class="donut" style="background:conic-gradient(var(--green-mid) 0% 62%, var(--blue) 62% 86%, var(--orange) 86% 100%)"></div>
+              <div class="donut-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:var(--green-mid)"></div><span>Mobile — 62%</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div><span>Desktop — 24%</span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div><span>Tablet — 14%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SETTINGS ══════════════════ -->
+    <div class="page-section" id="page-settings">
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Site Settings</span></div>
+          <div class="panel-body">
+            <div class="form-group"><label>Site Name</label><input type="text" value="SaveMore Market"></div>
+            <div class="form-group"><label>Contact Email</label><input type="email" value="admin@savemoremarket.co.za"></div>
+            <div class="form-group"><label>Currency</label><select><option>ZAR (R)</option><option>USD ($)</option></select></div>
+            <div class="form-group"><label>Commission Rate (%)</label><input type="number" value="5"></div>
+            <button class="btn-primary" onclick="showNotify('Settings saved ✓')">Save Changes</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Feature Toggles</span></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:0.88rem;font-weight:600">User Registration</div><div style="font-size:0.75rem;color:var(--muted)">Allow new sign-ups</div></div>
+                <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:0.88rem;font-weight:600">Listing Submissions</div><div style="font-size:0.75rem;color:var(--muted)">Users can post listings</div></div>
+                <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:0.88rem;font-weight:600">AI Review Completion</div><div style="font-size:0.75rem;color:var(--muted)">AI-powered review helper</div></div>
+                <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:0.88rem;font-weight:600">Maintenance Mode</div><div style="font-size:0.75rem;color:var(--muted)">Take site offline temporarily</div></div>
+                <button class="toggle" onclick="this.classList.toggle('on');showNotify(this.classList.contains('on')?'Maintenance mode ON':'Maintenance mode OFF')"></button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:0.88rem;font-weight:600">Email Notifications</div><div style="font-size:0.75rem;color:var(--muted)">Send order & user alerts</div></div>
+                <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Admin Account</span></div>
+          <div class="panel-body">
+            <div class="form-group"><label>Admin Name</label><input type="text" value="Admin User"></div>
+            <div class="form-group"><label>Admin Email</label><input type="email" value="admin@savemoremarket.co.za"></div>
+            <div class="form-group"><label>New Password</label><input type="password" placeholder="Leave blank to keep current"></div>
+            <button class="btn-primary" onclick="showNotify('Admin profile updated ✓')">Update Profile</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">Danger Zone</span></div>
+          <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button class="btn-sm btn-yellow" style="text-align:left;padding:12px" onclick="showNotify('All listings cache cleared')">🗑️ Clear All Listing Cache</button>
+              <button class="btn-sm btn-yellow" style="text-align:left;padding:12px" onclick="showNotify('Review queue cleared')">⭐ Clear Review Queue</button>
+              <button class="btn-sm btn-red" style="text-align:left;padding:12px" onclick="confirmDanger()">⚠️ Reset All User Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<!-- LOGIN GATE -->
+<div class="modal-overlay open" id="loginGate" style="z-index:9000;background:rgba(0,0,0,0.92)">
+  <div class="modal" style="max-width:380px;text-align:center">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem">🔐</div>
+    <h3 style="text-align:center;margin-bottom:0.4rem">Admin Login</h3>
+    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.4rem">SaveMore Market · Management Console</p>
+    <div class="form-group" style="text-align:left"><label>Username</label><input type="text" id="loginUser" placeholder="admin" value="admin"></div>
+    <div class="form-group" style="text-align:left"><label>Password</label><input type="password" id="loginPass" placeholder="••••••" value="admin123" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+    <div id="loginErr" style="color:var(--red);font-size:0.8rem;margin-bottom:10px;display:none">❌ Incorrect credentials</div>
+    <button class="btn-primary" style="width:100%" onclick="adminLogin()">Login to Admin Panel</button>
+    <p style="font-size:0.72rem;color:var(--muted);margin-top:1rem">Demo: admin / admin123</p>
+  </div>
+</div>
+
+<!-- ADD LISTING MODAL -->
+<div class="modal-overlay" id="addListingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addListingModal')">✕</button>
+    <h3>Add New Listing</h3>
+    <div class="form-group"><label>Product Name</label><input type="text" id="newListingName" placeholder="e.g. Samsung Galaxy S21"></div>
+    <div class="form-group"><label>Seller</label><input type="text" id="newListingSeller" placeholder="Seller username"></div>
+    <div class="form-group"><label>Category</label>
+      <select id="newListingCat"><option>Electronics</option><option>Clothing</option><option>Home & Garden</option><option>Books</option><option>Sport</option></select>
+    </div>
+    <div class="form-group"><label>Price (R)</label><input type="number" id="newListingPrice" placeholder="0.00"></div>
+    <button class="btn-primary" onclick="addListing()">Add Listing</button>
+  </div>
+</div>
+
+<!-- ADD USER MODAL -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addUserModal')">✕</button>
+    <h3>Add New User</h3>
+    <div class="form-group"><label>Full Name</label><input type="text" id="newUserName" placeholder="Full name"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="newUserEmail" placeholder="email@example.co.za"></div>
+    <div class="form-group"><label>Province</label>
+      <select id="newUserProv"><option>Gauteng</option><option>Western Cape</option><option>KwaZulu-Natal</option><option>Eastern Cape</option><option>Limpopo</option></select>
+    </div>
+    <div class="form-group"><label>Role</label>
+      <select><option>Buyer</option><option>Seller</option><option>Both</option></select>
+    </div>
+    <button class="btn-primary" onclick="addUser()">Create User</button>
+  </div>
+</div>
+
+<div class="notify" id="notify"></div>
+
+<script>
+/* ── AUTH ── */
+function adminLogin(){
+  const u=document.getElementById('loginUser').value;
+  const p=document.getElementById('loginPass').value;
+  if(u==='admin'&&p==='admin123'){
+    document.getElementById('loginGate').classList.remove('open');
+    showNotify('Welcome back, Admin! 👋');
+  } else {
+    document.getElementById('loginErr').style.display='block';
+  }
+}
+
+function logout(){
+  if(confirm('Log out of admin panel?')) document.getElementById('loginGate').classList.add('open');
+}
+
+/* ── NAVIGATION ── */
+function showPage(id, el){
+  document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el) el.classList.add('active');
+  const titles={dashboard:'Dashboard',listings:'Listings',orders:'Orders',users:'Users',sellers:'Sellers',reviews:'Reviews',reports:'Reports',analytics:'Analytics',settings:'Settings'};
+  document.getElementById('pageTitle').textContent=titles[id]||id;
+  document.getElementById('pageBreadcrumb').textContent='SaveMore / Admin / '+(titles[id]||id);
+  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+/* ── MODALS ── */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{
+  if(e.target===m&&m.id!=='loginGate') m.classList.remove('open');
+}));
+
+/* ── TABLE ACTIONS ── */
+function removeRow(btn){ if(confirm('Remove this item?')){ btn.closest('tr').remove(); showNotify('Item removed'); } }
+function approveListing(btn){
+  const badge=btn.closest('tr').querySelector('.badge');
+  badge.className='badge badge-green'; badge.textContent='Active';
+  btn.remove(); showNotify('Approved ✓');
+}
+function filterTable(tableId, q){
+  const rows=document.querySelectorAll('#'+tableId+' tbody tr');
+  rows.forEach(r=>{
+    r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
+}
+
+/* ── ADD LISTING ── */
+function addListing(){
+  const name=document.getElementById('newListingName').value.trim();
+  const seller=document.getElementById('newListingSeller').value.trim();
+  const cat=document.getElementById('newListingCat').value;
+  const price=document.getElementById('newListingPrice').value;
+  if(!name||!seller||!price){showNotify('Please fill all fields');return;}
+  const tbody=document.querySelector('#listingsTable tbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><div class="td-name"><span style="font-size:1.2rem">🏷️</span> ${name}</div></td><td>${seller}</td><td>${cat}</td><td style="font-family:'DM Mono',monospace;color:var(--green-mid)">R${parseInt(price).toLocaleString()}</td><td><span class="badge badge-yellow">Pending</span></td><td><button class="btn-sm btn-green" onclick="approveListing(this)">Approve</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Remove</button></td>`;
+  tbody.prepend(tr);
+  closeModal('addListingModal');
+  showNotify('Listing added ✓');
+}
+
+/* ── ADD USER ── */
+function addUser(){
+  const name=document.getElementById('newUserName').value.trim();
+  const email=document.getElementById('newUserEmail').value.trim();
+  const prov=document.getElementById('newUserProv').value;
+  if(!name||!email){showNotify('Please fill all fields');return;}
+  const tbody=document.querySelector('#usersTable tbody');
+  const tr=document.createElement('tr');
+  const init=name[0].toUpperCase();
+  const colors=['var(--green)','var(--blue)','var(--orange)','#8b5cf6','var(--red)'];
+  const col=colors[Math.floor(Math.random()*colors.length)];
+  tr.innerHTML=`<td><div class="td-name"><div class="td-avatar" style="background:${col}">${init}</div> ${name}</div></td><td style="color:var(--muted);font-size:0.8rem">${email}</td><td>${prov}</td><td style="color:var(--muted);font-size:0.78rem">${new Date().toISOString().split('T')[0]}</td><td style="font-family:'DM Mono',monospace">0</td><td><span class="badge badge-yellow">New</span></td><td><button class="btn-sm btn-yellow" onclick="showNotify('User suspended')">Suspend</button> <button class="btn-sm btn-red" onclick="removeRow(this)">Delete</button></td>`;
+  tbody.prepend(tr);
+  closeModal('addUserModal');
+  showNotify('User created ✓');
+}
+
+function confirmDanger(){
+  if(confirm('⚠️ WARNING: This will delete all user data. This cannot be undone.\n\nAre you absolutely sure?')){
+    showNotify('User data cleared (demo only)');
+  }
+}
+
+/* ── REVENUE CHART ── */
+const revenueData=[65,80,45,90,70,88,100];
+const chartEl=document.getElementById('revenueChart');
+const maxVal=Math.max(...revenueData);
+chartEl.innerHTML=revenueData.map((v,i)=>`
+  <div class="spark-bar ${i===6?'highlight':''}" style="height:${(v/maxVal)*100}%" title="R${(v*128).toLocaleString()}"></div>
+`).join('');
+
+/* ── NOTIFY ── */
+function showNotify(msg){
+  const n=document.getElementById('notify');
+  n.textContent=msg; n.classList.add('show');
+  setTimeout(()=>n.classList.remove('show'),3000);
+}
+</script>
+</body>
+</html>
