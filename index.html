@@ -23,7 +23,7 @@
 body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); }
 
 /* NAV */
-nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:100; }
+nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:10[...]
 .logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:var(--green); display:flex; align-items:center; gap:8px; }
 .logo span { color:var(--orange); }
 .nav-links { display:flex; gap:1.5rem; list-style:none; align-items:center; }
@@ -33,22 +33,22 @@ nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:
 .search-bar { display:flex; align-items:center; background:var(--bg); border:1.5px solid var(--border); border-radius:24px; padding:6px 14px; gap:8px; }
 .search-bar input { border:none; background:transparent; outline:none; font-family:'DM Sans',sans-serif; font-size:0.9rem; width:180px; color:var(--text); }
 .search-bar svg { color:var(--muted); }
-.btn-icon { background:var(--green-light); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--green); font-size:1.1rem; transition:.2s; }
+.btn-icon { background:var(--green-light); border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--green); font-s[...]
 .btn-icon:hover { background:var(--green); color:var(--white); }
 .cart-badge { position:relative; }
-.cart-badge::after { content:'3'; position:absolute; top:-4px; right:-4px; background:var(--orange); color:#fff; font-size:10px; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; font-weight:600; }
+.cart-badge::after { content:'3'; position:absolute; top:-4px; right:-4px; background:var(--orange); color:#fff; font-size:10px; border-radius:50%; width:16px; height:16px; display:flex; align-items:c[...]
 
 /* HERO */
-.hero { background:linear-gradient(135deg, var(--dark) 0%, #1a3d26 100%); color:#fff; padding:5rem 2rem 4rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; max-width:1200px; margin:0 auto; border-radius:0; }
+.hero { background:linear-gradient(135deg, var(--dark) 0%, #1a3d26 100%); color:#fff; padding:5rem 2rem 4rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; max-width:1200p[...]
 .hero-wrap { background:linear-gradient(135deg, var(--dark) 0%, #1a3d26 100%); }
-.hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:5px 14px; font-size:0.8rem; margin-bottom:1.2rem; color:rgba(255,255,255,0.85); }
+.hero-tag { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:20px; padding:5px 14px; font-size:0.8rem; margin-b[...]
 .hero h1 { font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:900; line-height:1.1; margin-bottom:1.2rem; }
 .hero h1 em { color:#6be8a0; font-style:normal; }
 .hero p { color:rgba(255,255,255,0.75); font-size:1rem; line-height:1.7; margin-bottom:2rem; }
 .hero-btns { display:flex; gap:12px; flex-wrap:wrap; }
-.btn-primary { background:var(--green-mid); color:#fff; border:none; padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:.2s; }
+.btn-primary { background:var(--green-mid); color:#fff; border:none; padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transi[...]
 .btn-primary:hover { background:#26b86a; transform:translateY(-1px); }
-.btn-outline { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.4); padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500; cursor:pointer; transition:.2s; }
+.btn-outline { background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.4); padding:12px 24px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:500[...]
 .btn-outline:hover { background:rgba(255,255,255,0.1); }
 .hero-stats { display:flex; gap:2rem; margin-top:2.5rem; }
 .stat-num { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:900; color:#6be8a0; }
@@ -65,7 +65,7 @@ nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:
 .section { max-width:1200px; margin:0 auto; padding:3rem 2rem; }
 .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
 .section-header h2 { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:var(--dark); }
-.see-all { color:var(--green); font-size:0.9rem; font-weight:600; text-decoration:none; background:var(--green-light); padding:8px 18px; border-radius:20px; border:none; cursor:pointer; transition:.2s; }
+.see-all { color:var(--green); font-size:0.9rem; font-weight:600; text-decoration:none; background:var(--green-light); padding:8px 18px; border-radius:20px; border:none; cursor:pointer; transition:.2s[...]
 .see-all:hover { background:var(--green); color:#fff; }
 .cats-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:16px; }
 .cat-card { background:var(--white); border:1.5px solid var(--border); border-radius:16px; padding:1.2rem 0.8rem; text-align:center; cursor:pointer; transition:.2s; }
@@ -80,17 +80,17 @@ nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:
 .product-card:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,0.08); }
 .product-img { height:180px; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:3.5rem; position:relative; }
 .product-badge { position:absolute; top:10px; left:10px; background:var(--orange); color:#fff; font-size:0.7rem; font-weight:700; padding:3px 10px; border-radius:12px; }
-.product-fav { position:absolute; top:10px; right:10px; background:var(--white); border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.1); transition:.2s; }
+.product-fav { position:absolute; top:10px; right:10px; background:var(--white); border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; curs[...]
 .product-fav:hover { background:var(--orange-light); }
 .product-body { padding:1rem; }
 .product-body h4 { font-size:0.9rem; font-weight:600; margin-bottom:4px; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .product-meta { font-size:0.75rem; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
 .product-seller { display:flex; align-items:center; gap:4px; }
-.seller-avatar { width:18px; height:18px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--green); }
+.seller-avatar { width:18px; height:18px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--green)[...]
 .product-footer { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
 .product-price { font-size:1.1rem; font-weight:700; color:var(--green); }
 .product-old { font-size:0.75rem; color:var(--muted); text-decoration:line-through; margin-left:4px; }
-.btn-cart { background:var(--green); color:#fff; border:none; border-radius:20px; padding:7px 16px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:.2s; font-family:'DM Sans',sans-serif; }
+.btn-cart { background:var(--green); color:#fff; border:none; border-radius:20px; padding:7px 16px; font-size:0.8rem; font-weight:600; cursor:pointer; transition:.2s; font-family:'DM Sans',sans-serif;[...]
 .btn-cart:hover { background:var(--green-mid); }
 .rating { display:flex; align-items:center; gap:3px; font-size:0.75rem; color:var(--muted); }
 .stars { color:#f59e0b; }
@@ -104,13 +104,13 @@ nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:
 .review-form h4 { margin-bottom:12px; font-size:1rem; font-weight:600; color:var(--dark); }
 .review-form input,
 .review-form select,
-.review-form textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; color:var(--text); margin-bottom:10px; transition:.2s; }
+.review-form textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; color:var(--text); margin[...]
 .review-form input:focus,
 .review-form select:focus,
 .review-form textarea:focus { border-color:var(--green-mid); }
 
 /* AI Complete button */
-.ai-complete-btn { background:linear-gradient(135deg, #1a6b3c, #2d9e5f); color:#fff; border:none; border-radius:10px; padding:8px 16px; font-size:0.82rem; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; transition:.2s; margin-bottom:10px; }
+.ai-complete-btn { background:linear-gradient(135deg, #1a6b3c, #2d9e5f); color:#fff; border:none; border-radius:10px; padding:8px 16px; font-size:0.82rem; font-weight:600; cursor:pointer; font-family:[...]
 .ai-complete-btn:hover { opacity:0.88; transform:translateY(-1px); }
 .ai-complete-btn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
 .ai-badge { background:rgba(255,255,255,0.25); border-radius:6px; padding:2px 6px; font-size:0.7rem; }
@@ -119,7 +119,7 @@ nav { background:var(--white); border-bottom:1.5px solid var(--border); padding:
 .sell-banner { background:linear-gradient(135deg, var(--orange) 0%, #c04a0e 100%); border-radius:24px; padding:3rem 2.5rem; display:flex; align-items:center; justify-content:space-between; }
 .sell-banner-text h2 { font-family:'Playfair Display',serif; font-size:2rem; color:#fff; margin-bottom:0.6rem; }
 .sell-banner-text p { color:rgba(255,255,255,0.8); font-size:0.95rem; max-width:400px; line-height:1.6; }
-.btn-white { background:#fff; color:var(--orange); border:none; padding:12px 28px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; transition:.2s; }
+.btn-white { background:#fff; color:var(--orange); border:none; padding:12px 28px; border-radius:28px; font-family:'DM Sans',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; transition:[...]
 .btn-white:hover { background:var(--orange-light); }
 .sell-icons { font-size:4rem; opacity:0.3; }
 
@@ -130,20 +130,20 @@ footer { background:var(--dark); color:rgba(255,255,255,0.7); padding:3rem 2rem 
 .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
 .footer-col ul a { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.85rem; transition:.2s; }
 .footer-col ul a:hover { color:#6be8a0; }
-.footer-bottom { max-width:1200px; margin:0 auto; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; color:rgba(255,255,255,0.4); }
+.footer-bottom { max-width:1200px; margin:0 auto; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; col[...]
 
 /* MODAL */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
 .modal-overlay.open { display:flex; }
 .modal { background:#fff; border-radius:24px; padding:2rem; width:90%; max-width:480px; position:relative; max-height:90vh; overflow-y:auto; }
 .modal h3 { font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.2rem; color:var(--dark); }
-.modal-close { position:absolute; top:1rem; right:1rem; background:var(--bg); border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; }
+.modal-close { position:absolute; top:1rem; right:1rem; background:var(--bg); border:none; border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:1.2rem; display:flex; align-items:cente[...]
 .form-group { margin-bottom:1rem; }
 .form-group label { display:block; font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:5px; }
-.form-group input, .form-group select, .form-group textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; color:var(--text); transition:.2s; }
+.form-group input, .form-group select, .form-group textarea { width:100%; border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.9rem; o[...]
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--green-mid); }
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-.notify { position:fixed; bottom:2rem; right:2rem; background:var(--green); color:#fff; padding:12px 20px; border-radius:12px; font-size:0.9rem; font-weight:600; z-index:2000; transform:translateY(100px); opacity:0; transition:.3s; }
+.notify { position:fixed; bottom:2rem; right:2rem; background:var(--green); color:#fff; padding:12px 20px; border-radius:12px; font-size:0.9rem; font-weight:600; z-index:2000; transform:translateY(100[...]
 .notify.show { transform:translateY(0); opacity:1; }
 
 @media(max-width:768px){
@@ -216,7 +216,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.7); padding:3rem 2rem 
   <div class="section-header">
     <h2>Featured Listings</h2>
     <div style="display:flex;gap:10px;align-items:center">
-      <select id="filterCat" onchange="filterProducts()" style="border:1.5px solid var(--border);border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;outline:none;font-size:0.85rem;color:var(--text)">
+      <select id="filterCat" onchange="filterProducts()" style="border:1.5px solid var(--border);border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;outline:none;font-size:0.85rem;col[...]
         <option value="">All Categories</option>
         <option>Electronics</option>
         <option>Clothing</option>
@@ -344,7 +344,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.7); padding:3rem 2rem 
     <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
     <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
     <button class="btn-primary" style="width:100%;padding:12px;border-radius:12px;font-size:1rem" onclick="showNotify('Logged in successfully! 🎉');closeModal('loginModal')">Login</button>
-    <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--muted)">No account? <a href="#" style="color:var(--green);font-weight:600">Register here</a></p>
+    <p style="text-align:center;margin-top:1rem;font-size:0.85rem;color:var(--muted)">No account? <a href="register.html" style="color:var(--green);font-weight:600">Register here →</a></p>
   </div>
 </div>
 
@@ -356,7 +356,7 @@ footer { background:var(--dark); color:rgba(255,255,255,0.7); padding:3rem 2rem 
     <div class="form-group"><label>Product Title</label><input type="text" placeholder="e.g. Samsung Galaxy S21 - Excellent Condition"></div>
     <div class="form-row">
       <div class="form-group"><label>Price (R)</label><input type="number" placeholder="0.00"></div>
-      <div class="form-group"><label>Category</label><select><option>Electronics</option><option>Clothing</option><option>Home &amp; Garden</option><option>Books</option><option>Sport</option><option>Vehicles</option></select></div>
+      <div class="form-group"><label>Category</label><select><option>Electronics</option><option>Clothing</option><option>Home &amp; Garden</option><option>Books</option><option>Sport</option><op[...]
     </div>
     <div class="form-group"><label>Description</label><textarea rows="3" placeholder="Describe your item..."></textarea></div>
     <div class="form-group"><label>Location</label><input type="text" placeholder="e.g. Johannesburg, Gauteng"></div>
@@ -551,8 +551,8 @@ async function aiCompleteReview(){
   statusEl.textContent = 'AI is completing your review…';
 
   const prompt = draft
-    ? `Complete this customer review for "${product}" on a South African marketplace. The reviewer gave it a ${ratingLabels[rating]} rating. Their draft starts with: "${draft}". Write a natural, helpful, honest continuation that finishes their thought in 2–3 sentences. Return ONLY the completed full review text, no quotes, no intro.`
-    : `Write a short customer review for "${product}" on a South African marketplace. The reviewer rated it ${ratingLabels[rating]}. Write 2–3 sentences that are natural, specific, and helpful. Return ONLY the review text.`;
+    ? `Complete this customer review for "${product}" on a South African marketplace. The reviewer gave it a ${ratingLabels[rating]} rating. Their draft starts with: "${draft}". Write a natural, helpf[...]
+    : `Write a short customer review for "${product}" on a South African marketplace. The reviewer rated it ${ratingLabels[rating]}. Write 2–3 sentences that are natural, specific, and helpful. Retu[...]
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
